@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aplikasi Pengingat Tugas - Kelola tugas Anda dengan mudah dan efisien">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Pengingat Tugas">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%236366f1' width='192' height='192'/><text x='50%' y='50%' font-size='100' fill='white' text-anchor='middle' dominant-baseline='central' font-weight='bold'>✓</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%236366f1' width='180' height='180' rx='40'/><text x='50%' y='50%' font-size='90' fill='white' text-anchor='middle' dominant-baseline='central' font-weight='bold'>✓</text></svg>">
+    <title>Aplikasi Pengingat Tugas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📋 Pengingat Tugas</h1>
+            <p class="subtitle">Kelola tugas Anda dengan mudah</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Input Tugas Baru -->
+            <div class="input-section">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="taskInput" 
+                        placeholder="Masukkan tugas baru..."
+                        class="task-input"
+                    >
+                    <button id="addBtn" class="add-btn">
+                        <span class="btn-icon">+</span> Tambah
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Tugas -->
+            <div class="filter-section">
+                <button class="filter-btn active" data-filter="semua">
+                    Semua <span class="count" id="countAll">0</span>
+                </button>
+                <button class="filter-btn" data-filter="aktif">
+                    Aktif <span class="count" id="countActive">0</span>
+                </button>
+                <button class="filter-btn" data-filter="selesai">
+                    Selesai <span class="count" id="countDone">0</span>
+                </button>
+            </div>
+
+            <!-- Daftar Tugas -->
+            <div class="tasks-section">
+                <ul id="taskList" class="task-list">
+                    <li class="empty-state">
+                        <span class="empty-icon">🎯</span>
+                        <p>Belum ada tugas. Mulai tambahkan tugas Anda!</p>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tombol Bersihkan -->
+            <div class="action-section">
+                <button id="clearBtn" class="clear-btn" style="display: none;">
+                    🗑️ Bersihkan Tugas Selesai
+                </button>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2026 Aplikasi Pengingat Tugas | Buat hari Anda lebih produktif</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Register Service Worker untuk PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker terdaftar:', registration);
+                    })
+                    .catch(error => {
+                        console.log('❌ Service Worker gagal terdaftar:', error);
+                    });
+            });
+        }
+
+        // Detect install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallPrompt();
+        });
+
+        function showInstallPrompt() {
+            // Bisa ditambahkan UI untuk install prompt di sini
+            console.log('💡 Aplikasi siap diinstall');
+        }
+
+        // Handle app installed
+        window.addEventListener('appinstalled', () => {
+            console.log('🎉 Aplikasi berhasil diinstall!');
+            deferredPrompt = null;
+        });
+    </script>
+</body>
+</html>
